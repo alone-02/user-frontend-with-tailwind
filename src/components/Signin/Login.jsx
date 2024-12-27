@@ -5,13 +5,13 @@ import { Link, useNavigate } from "react-router-dom";
 import React, { useContext, useState } from "react";
 import { AuthContext } from "../ContextApi/AuthContext";
 
-import "./login.css";
+//import "./login.css";
 //import LoginIcon from "@mui/icons-material/Login";
 
 function Login() {
-  const navigator = useNavigate();
+  const navigate = useNavigate();
 
-  const {signIn, setSignIn} = useContext(AuthContext);
+  const { signIn, setSignIn } = useContext(AuthContext);
 
   const [loginData, setLoginData] = useState({
     email: "",
@@ -33,7 +33,6 @@ function Login() {
     }));
   }
 
-  // Validation function
   function validate() {
     let emailError = "";
     let passwordError = "";
@@ -56,11 +55,6 @@ function Login() {
     return true;
   }
 
-  const setSignInContext = (bool) => {
-    console.log(bool);
-    setSignIn(bool);
-  };
-
   const login = async (event) => {
     event.preventDefault();
 
@@ -80,8 +74,8 @@ function Login() {
 
         //console.log(userId);
 
-        document.cookie = `userId=${userId}; path=/; secure; SameSite=Strict`;
-        document.cookie = `authToken=${token}; path=/; secure; SameSite=Strict`;
+        Cookies.set("authToken", token, { secure: true, sameSite: "Strict" });
+        Cookies.set("userId", userId, { secure: true, sameSite: "Strict" });
 
         const userIdCookie = Cookies.get("userId");
         const authTokenCookie = Cookies.get("authToken");
@@ -93,9 +87,9 @@ function Login() {
           alert("Something went wrong. Please try again.");
         }
 
-        setSignInContext(true);
+        setSignIn(true);
 
-        navigator("/explore");
+        navigate("/explore");
       }
     } catch (err) {
       if (err.response && err.response.data.message) {
@@ -110,50 +104,61 @@ function Login() {
   };
 
   return (
-    <>
-      <form method="post" action="./login" onSubmit={login}>
-        <div className="loginform">
-          <h2>Log In</h2>
-
+    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+      <form
+        method="post"
+        action="./login"
+        onSubmit={login}
+        className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md"
+      >
+        <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">
+          Log In
+        </h2>
+        <div className="mb-4">
           <input
-            className="login_input"
-            placeholder="Enter Email"
-            required
+            className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            type="email"
             name="email"
-            onChange={dataInput}
+            placeholder="Enter Email"
             value={loginData.email}
+            onChange={dataInput}
+            required
           />
           {errors.email && (
-            <p className="error" style={{ color: "red", fontSize: "12px" }}>
-              {errors.email}
-            </p>
+            <p className="text-red-500 text-sm mt-1">{errors.email}</p>
           )}
+        </div>
 
+        <div className="mb-4">
           <input
-            className="login_input"
+            className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             type="password"
-            placeholder="Enter Password"
             name="password"
-            required
-            onChange={dataInput}
+            placeholder="Enter Password"
             value={loginData.password}
+            onChange={dataInput}
+            required
           />
           {errors.password && (
-            <p className="error" style={{ color: "red", fontSize: "12px" }}>
-              {errors.password}
-            </p>
+            <p className="text-red-500 text-sm mt-1">{errors.password}</p>
           )}
-
-          <Link to="/signup" className="linksingup">
-            Don't have an account? Sign up
-          </Link>
-
-          <button className="loginformbtn" type="submit" disabled={loading}>
-            {loading ? "Logging In" : "Log In"}
-          </button>
         </div>
+        <Link
+          to="/signup"
+          className="block text-blue-500 text-sm mb-4 text-center hover:underline"
+        >
+          Don't have an account? Sign up
+        </Link>
+
+        <button
+          className="w-full p-3 rounded-md text-white bg-blue-600 hover:bg-blue-700"
+          type="submit"
+          disabled={loading}
+        >
+          {loading ? "Logging In" : "Log In"}
+        </button>
       </form>
-    </>
+    </div>
   );
 }
 

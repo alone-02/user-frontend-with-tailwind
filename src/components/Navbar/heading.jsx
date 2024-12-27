@@ -6,7 +6,7 @@ import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Dropdown from "./AccountDropdown";
 import Search from "./Search";
-import "./heading.css";
+//import "./heading.css";
 import { AuthContext } from "../ContextApi/AuthContext";
 
 function Heading({ toggleSidebar }) {
@@ -15,7 +15,7 @@ function Heading({ toggleSidebar }) {
 
   const isHome = location.pathname === "/";
   const isLogin = location.pathname === "/login";
-  console.log(isLogin);
+ // console.log(isLogin);
   const { signIn, setSignIn } = useContext(AuthContext);
   console.log(signIn);
 
@@ -50,9 +50,7 @@ function Heading({ toggleSidebar }) {
           {/*<div className="navbar-search">
             <Search />
           </div>*/}
-          <div className="navbar-cart">
-            <ShoppingCartIcon onClick={cart} />
-          </div>
+          
         </>
       )}
       <div className="navbar-buttons">

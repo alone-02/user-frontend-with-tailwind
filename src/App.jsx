@@ -16,7 +16,7 @@ import Idoldetails from "./components/Productfeature/Idoldetails.jsx";
 import Footer from "./components/Footer/Footer.jsx";
 import LandingPage from "./components/home/Home";
 import Navbar from "./components/Navbar/Navbar.jsx";
-import "./styles.css";
+//import "./styles.css";
 
 function AppContent() {
   const location = useLocation();
@@ -26,7 +26,6 @@ function AppContent() {
   const auth = isLogin || isSignup;
 
   const [isSidebarOpen, setSidebarOpen] = useState(false);
-  const {signIn} = useContext(AuthContext);
 
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
@@ -34,11 +33,11 @@ function AppContent() {
 
   return (
     <>
-      <div className="container">
-        <Heading toggleSidebar={toggleSidebar} />
-        <div className="body">
-          {!auth && <Sidebar isSidebarOpen={isSidebarOpen} />}
-          <div className="cards_container">
+      <div className="min-h-screen bg-gray-200 flex flex-col">
+        <Navbar toggleSidebar={toggleSidebar} />
+        <div className="flex flex-1">
+          {!auth && <Sidebar isSidebarOpen={isSidebarOpen} className="w-1/4"/>}
+          <div className="flex-1 p-4">
             <Routes>
               <Route exact path="/" element={<LandingPage />} />
               <Route path="/explore" element={<Content />} />

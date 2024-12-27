@@ -47,7 +47,7 @@ function Idoldetails() {
 
       console.log(result);
     } catch (err) {
-      console.error(err.response);
+      console.error(err.response.data.message);
     }
   };
 
